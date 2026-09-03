@@ -1,0 +1,69 @@
+{
+  "expo": {
+    "name": "BabyBliss",
+    "slug": "babybliss",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "babybliss",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFF8F5"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.babybliss.mobile",
+      "infoPlist": {
+        "NSCameraUsageDescription": "BabyBliss needs the camera to capture precious moments.",
+        "NSPhotoLibraryUsageDescription": "BabyBliss needs photo access to save and organize memories.",
+        "NSLocationWhenInUseUsageDescription": "Optionally tag memories with a location."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFF8F5",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "app.babybliss.mobile",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ],
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-image",
+      "expo-sharing",
+      "expo-font",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow BabyBliss to access your photos for memories.",
+          "cameraPermission": "Allow BabyBliss to use the camera for baby moments."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#D4726A"
+        }
+      ],
+      "expo-splash-screen"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "replace-with-eas-project-id"
+      }
+    }
+  }
+}
