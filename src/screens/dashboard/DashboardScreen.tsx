@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen } from '../../components/ui/Screen';
+import { ClaySurface } from '../../components/ui/ClaySurface';
 import { FadeIn, SectionLabel, SoftCard } from '../../components/ui/Motion';
 import { MemoryCard } from '../../components/memories/MemoryCard';
 import { useApp } from '../../context/AppContext';
 import { buildDailyInsight } from '../../data/demo';
 import { babyAgeInDays, formatBabyAge, formatShortDate } from '../../utils/date';
-import { colors, fonts, gradients, radii, spacing, typography } from '../../theme';
+import { clayPressable, clayShadowOut, colors, fonts, radii, spacing, typography } from '../../theme';
 import { RootStackParamList } from '../../navigation/types';
 
 export function DashboardScreen() {
@@ -44,14 +44,17 @@ export function DashboardScreen() {
             <Text style={styles.brand}>BabyBliss</Text>
             <Text style={styles.hello}>Hello, {user?.name?.split(' ')[0] ?? 'Parent'}</Text>
           </View>
-          <Pressable style={styles.avatar} onPress={() => navigation.navigate('Profile')}>
+          <Pressable
+            style={({ pressed }) => [styles.avatar, pressed && clayPressable]}
+            onPress={() => navigation.navigate('Profile')}
+          >
             <Text style={styles.avatarText}>{(user?.name ?? 'P').slice(0, 1)}</Text>
           </Pressable>
         </View>
       </FadeIn>
 
       <FadeIn delay={80}>
-        <LinearGradient colors={[...gradients.softPeach]} style={styles.ageHero}>
+        <ClaySurface tone="warm" size="xl" style={styles.ageHero} lift>
           <Text style={styles.babyName}>{baby.name}</Text>
           <Text style={styles.age}>{ageLabel}</Text>
           <Text style={styles.ageSub}>{days} days of wonder · Born {formatShortDate(baby.birthDate)}</Text>
@@ -60,7 +63,7 @@ export function DashboardScreen() {
             <Stat label="Milestones" value={String(achievements.length)} />
             <Stat label="Reminders" value={String(upcomingReminders.length)} />
           </View>
-        </LinearGradient>
+        </ClaySurface>
       </FadeIn>
 
       <FadeIn delay={160}>
@@ -92,6 +95,7 @@ export function DashboardScreen() {
         <FadeIn delay={220}>
           <SectionLabel>Today's thought</SectionLabel>
           <SoftCard
+            tone="cool"
             onPress={() => navigation.navigate('PremiumInsights')}
             style={styles.insightCard}
           >
@@ -128,7 +132,7 @@ export function DashboardScreen() {
         <SectionLabel>Upcoming milestones</SectionLabel>
         <View style={styles.list}>
           {upcomingMilestones.map((m) => (
-            <SoftCard key={m.id} style={styles.mileItem}>
+            <SoftCard key={m.id} tone="accent" style={styles.mileItem}>
               <Text style={styles.mileTitle}>{m.title}</Text>
               <Text style={styles.mileMeta}>Typical ~{m.typicalAgeMonths} months</Text>
             </SoftCard>
@@ -140,7 +144,7 @@ export function DashboardScreen() {
         <SectionLabel>Next reminders</SectionLabel>
         <View style={styles.list}>
           {upcomingReminders.map((r) => (
-            <SoftCard key={r.id} style={styles.mileItem}>
+            <SoftCard key={r.id} tone="brand" style={styles.mileItem}>
               <Text style={styles.mileTitle}>{r.title}</Text>
               <Text style={styles.mileMeta}>{formatShortDate(r.scheduledAt)}</Text>
             </SoftCard>
@@ -173,7 +177,7 @@ function QuickAction({
   onPress: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={styles.quick}>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.quick, pressed && clayPressable]}>
       <View style={styles.quickIcon}>
         <Ionicons name={icon} size={20} color={colors.brandDeep} />
       </View>
@@ -202,12 +206,18 @@ const styles = StyleSheet.create({
     color: colors.muted,
   },
   avatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: colors.ink,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.25)',
+    borderLeftColor: 'rgba(255,255,255,0.18)',
+    borderRightColor: 'rgba(0,0,0,0.3)',
+    borderBottomColor: 'rgba(0,0,0,0.4)',
+    ...clayShadowOut,
   },
   avatarText: {
     fontFamily: fonts.bodyBold,
@@ -215,10 +225,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   ageHero: {
-    borderRadius: radii.xl,
-    padding: spacing.lg,
     marginBottom: spacing.lg,
-    gap: 4,
   },
   babyName: {
     fontFamily: fonts.handwrittenBold,
@@ -240,9 +247,14 @@ const styles = StyleSheet.create({
   },
   stat: {
     flex: 1,
-    backgroundColor: colors.surfaceSoft,
+    backgroundColor: colors.surface,
     borderRadius: radii.md,
     padding: spacing.sm,
+    borderWidth: 2,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.2)',
+    borderBottomColor: 'rgba(150,110,90,0.25)',
   },
   statValue: {
     fontFamily: fonts.display,
@@ -259,16 +271,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: spacing.xl,
   },
-  quick: { alignItems: 'center', gap: 6, width: '23%' },
+  quick: { alignItems: 'center', gap: 8, width: '23%' },
   quickIcon: {
-    width: 52,
-    height: 52,
-    borderRadius: 18,
+    width: 56,
+    height: 56,
+    borderRadius: 22,
     backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.22)',
+    borderBottomColor: 'rgba(150,110,90,0.28)',
     alignItems: 'center',
     justifyContent: 'center',
+    ...clayShadowOut,
   },
   quickLabel: {
     fontFamily: fonts.bodyMedium,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, fonts, gradients, radii, spacing } from '../../theme';
+import { clayShadowOut, colors, fonts, gradients, radii, spacing } from '../../theme';
 import { Memory } from '../../types';
 import { formatShortDate } from '../../utils/date';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
@@ -12,7 +12,7 @@ interface MemoryCardProps {
   compact?: boolean;
 }
 
-export function MemoryCard({ memory, onPress, compact }: MemoryCardProps) {
+export function MemoryCard({ memory, compact }: MemoryCardProps) {
   const initial = memory.title.slice(0, 1).toUpperCase();
   return (
     <View style={[styles.wrap, compact && styles.compact]}>
@@ -50,20 +50,26 @@ const styles = StyleSheet.create({
   wrap: {
     flexDirection: 'row',
     gap: spacing.md,
-    padding: spacing.sm,
-    borderRadius: radii.lg,
+    padding: spacing.sm + 2,
+    borderRadius: radii.clay,
     backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.22)',
+    borderBottomColor: 'rgba(150,110,90,0.28)',
+    ...clayShadowOut,
   },
   compact: {
-    padding: spacing.xs,
+    padding: spacing.sm,
   },
   media: {
     width: 88,
     height: 88,
     borderRadius: radii.md,
     overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.85)',
   },
   image: {
     width: '100%',

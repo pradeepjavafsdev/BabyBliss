@@ -8,7 +8,7 @@ import {
   TextStyle,
 } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import { colors, radii, typography } from '../../theme';
+import { clayPressable, clayShadowLift, clayShadowOut, colors, radii, typography } from '../../theme';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'premium' | 'danger';
 
@@ -46,12 +46,12 @@ export function Button({
         styles.base,
         styles[variant],
         (disabled || loading) && styles.disabled,
-        pressed && !disabled && styles.pressed,
+        pressed && !disabled && clayPressable,
         style,
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'ghost' || variant === 'secondary' ? colors.brand : colors.white} />
+        <ActivityIndicator color={variant === 'ghost' || variant === 'secondary' ? colors.brandDeep : colors.white} />
       ) : (
         <Text style={[styles.text, textStyles[variant], textStyle]}>{title}</Text>
       )}
@@ -61,35 +61,55 @@ export function Button({
 
 const styles = StyleSheet.create({
   base: {
-    minHeight: 52,
+    minHeight: 54,
     borderRadius: radii.pill,
-    paddingHorizontal: 22,
+    paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2.5,
   },
   primary: {
     backgroundColor: colors.brand,
+    borderTopColor: 'rgba(255,255,255,0.45)',
+    borderLeftColor: 'rgba(255,255,255,0.35)',
+    borderRightColor: 'rgba(140,60,50,0.35)',
+    borderBottomColor: 'rgba(120,50,45,0.45)',
+    ...clayShadowLift,
   },
   secondary: {
-    backgroundColor: colors.brandMist,
+    backgroundColor: colors.brandSoft,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(200,130,120,0.28)',
+    borderBottomColor: 'rgba(180,110,100,0.32)',
+    ...clayShadowOut,
   },
   ghost: {
-    backgroundColor: colors.transparent,
-    borderWidth: 1.5,
-    borderColor: colors.lineStrong,
+    backgroundColor: colors.surface,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.2)',
+    borderBottomColor: 'rgba(160,120,100,0.25)',
+    ...clayShadowOut,
   },
   premium: {
     backgroundColor: colors.ink,
+    borderTopColor: 'rgba(255,255,255,0.18)',
+    borderLeftColor: 'rgba(255,255,255,0.12)',
+    borderRightColor: 'rgba(0,0,0,0.35)',
+    borderBottomColor: 'rgba(0,0,0,0.45)',
+    ...clayShadowLift,
   },
   danger: {
     backgroundColor: colors.danger,
+    borderTopColor: 'rgba(255,255,255,0.4)',
+    borderLeftColor: 'rgba(255,255,255,0.3)',
+    borderRightColor: 'rgba(120,40,40,0.35)',
+    borderBottomColor: 'rgba(100,30,30,0.45)',
+    ...clayShadowOut,
   },
   disabled: {
     opacity: 0.45,
-  },
-  pressed: {
-    transform: [{ scale: 0.98 }],
-    opacity: 0.92,
   },
   text: {
     ...typography.button,

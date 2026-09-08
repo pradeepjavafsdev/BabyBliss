@@ -55,7 +55,7 @@ export function PremiumInsightsScreen() {
     >
       {!user?.isPremium ? (
         <FadeIn>
-          <SoftCard style={styles.upsell}>
+          <SoftCard tone="premium" style={styles.upsell}>
             <Text style={styles.upsellTitle}>Unlock BabyBliss Premium</Text>
             <Text style={styles.upsellBody}>
               Vision summaries, daily thoughts, growth analytics, multi-baby support, highlight videos, and unlimited archives.
@@ -67,7 +67,7 @@ export function PremiumInsightsScreen() {
 
       {insight ? (
         <FadeIn delay={80}>
-          <SoftCard style={styles.block}>
+          <SoftCard tone="warm" style={styles.block}>
             <Text style={styles.label}>Daily thought · {insight.babyAgeLabel}</Text>
             <Text style={styles.reflection}>{insight.reflection}</Text>
             <Text style={styles.tip}>{insight.tip}</Text>
@@ -77,7 +77,7 @@ export function PremiumInsightsScreen() {
       ) : null}
 
       <FadeIn delay={140}>
-        <SoftCard style={styles.block}>
+        <SoftCard tone="accent" style={styles.block}>
           <Text style={styles.label}>Milestone predictions</Text>
           {predictions.map((p) => (
             <Text key={p} style={styles.pred}>
@@ -88,7 +88,7 @@ export function PremiumInsightsScreen() {
       </FadeIn>
 
       <FadeIn delay={200}>
-        <SoftCard style={styles.block}>
+        <SoftCard tone="cool" style={styles.block}>
           <Text style={styles.label}>Growth snapshot</Text>
           {growth.length ? (
             growth.map((g) => (
@@ -123,7 +123,7 @@ export function PremiumInsightsScreen() {
 }
 
 const styles = StyleSheet.create({
-  upsell: { gap: spacing.sm, marginBottom: spacing.lg, backgroundColor: colors.ink },
+  upsell: { gap: spacing.sm, marginBottom: spacing.lg },
   upsellTitle: { fontFamily: fonts.display, fontSize: 22, color: colors.premiumSoft },
   upsellBody: { fontFamily: fonts.body, fontSize: 14, color: 'rgba(255,255,255,0.75)', lineHeight: 20 },
   block: { gap: spacing.sm, marginBottom: spacing.lg },

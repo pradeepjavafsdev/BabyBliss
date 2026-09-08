@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, fonts, radii, spacing, typography } from '../../theme';
+import { ClaySurface } from './ClaySurface';
+import { colors, fonts, spacing, typography } from '../../theme';
 
 interface EmptyStateProps {
   icon?: keyof typeof Ionicons.glyphMap;
@@ -12,9 +13,9 @@ interface EmptyStateProps {
 export function EmptyState({ icon = 'heart-outline', title, message }: EmptyStateProps) {
   return (
     <View style={styles.wrap}>
-      <View style={styles.iconWrap}>
-        <Ionicons name={icon} size={28} color={colors.brand} />
-      </View>
+      <ClaySurface tone="brand" size="md" style={styles.iconShell} contentStyle={styles.iconPad}>
+        <Ionicons name={icon} size={28} color={colors.brandDeep} />
+      </ClaySurface>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.message}>{message}</Text>
     </View>
@@ -28,14 +29,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     gap: spacing.sm,
   },
-  iconWrap: {
-    width: 64,
-    height: 64,
-    borderRadius: radii.lg,
-    backgroundColor: colors.brandMist,
+  iconShell: {
+    width: 72,
+    height: 72,
+    marginBottom: spacing.xs,
+  },
+  iconPad: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.xs,
+    padding: 0,
   },
   title: {
     ...typography.section,

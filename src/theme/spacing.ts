@@ -1,3 +1,5 @@
+import { Platform, ViewStyle } from 'react-native';
+
 export const spacing = {
   xxs: 4,
   xs: 8,
@@ -9,27 +11,48 @@ export const spacing = {
   xxxl: 64,
 } as const;
 
+/** Claymorphism favors plump radii — prefer clay / clayXl for surfaces. */
 export const radii = {
-  sm: 10,
-  md: 16,
-  lg: 24,
+  sm: 14,
+  md: 20,
+  lg: 26,
   xl: 32,
+  clay: 28,
+  clayXl: 36,
   pill: 999,
 } as const;
 
 export const shadows = {
   soft: {
-    shadowColor: '#2A221F',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.08,
-    shadowRadius: 20,
-    elevation: 4,
-  },
+    shadowColor: '#B48C78',
+    shadowOffset: { width: 4, height: 8 },
+    shadowOpacity: 0.18,
+    shadowRadius: 16,
+    elevation: 5,
+  } satisfies ViewStyle,
   lift: {
-    shadowColor: '#2A221F',
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.12,
-    shadowRadius: 28,
-    elevation: 8,
-  },
+    shadowColor: '#A87868',
+    shadowOffset: { width: 6, height: 12 },
+    shadowOpacity: 0.24,
+    shadowRadius: 22,
+    elevation: 9,
+  } satisfies ViewStyle,
+  clay: Platform.select({
+    ios: {
+      shadowColor: '#B48C78',
+      shadowOffset: { width: 6, height: 10 },
+      shadowOpacity: 0.28,
+      shadowRadius: 18,
+    },
+    android: {
+      elevation: 8,
+      shadowColor: '#B48C78',
+    },
+    default: {
+      shadowColor: '#B48C78',
+      shadowOffset: { width: 6, height: 10 },
+      shadowOpacity: 0.22,
+      shadowRadius: 16,
+    },
+  }) as ViewStyle,
 };

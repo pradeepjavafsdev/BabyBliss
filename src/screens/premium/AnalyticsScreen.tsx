@@ -4,7 +4,7 @@ import { Screen } from '../../components/ui/Screen';
 import { SoftCard } from '../../components/ui/Motion';
 import { useApp } from '../../context/AppContext';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
-import { colors, fonts, spacing } from '../../theme';
+import { colors, fonts, radii, spacing } from '../../theme';
 
 export function AnalyticsScreen() {
   const { memories, achievements, milestones, growth, baby } = useApp();
@@ -88,12 +88,14 @@ const styles = StyleSheet.create({
   barLabel: { width: 72, fontFamily: fonts.body, fontSize: 12, color: colors.inkSoft },
   barTrack: {
     flex: 1,
-    height: 10,
-    borderRadius: 999,
-    backgroundColor: colors.brandMist,
+    height: 14,
+    borderRadius: radii.pill,
+    backgroundColor: colors.brandSoft,
     overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.8)',
   },
-  barFill: { height: '100%', backgroundColor: colors.brand },
+  barFill: { height: '100%', backgroundColor: colors.brand, borderRadius: radii.pill },
   barCount: { width: 24, fontFamily: fonts.bodyMedium, fontSize: 12, color: colors.ink },
   row: { fontFamily: fonts.body, fontSize: 14, color: colors.inkSoft },
   empty: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },

@@ -7,6 +7,7 @@ import { Chip } from '../../components/ui/Chip';
 import { useApp } from '../../context/AppContext';
 import { Gender } from '../../types';
 import { createId } from '../../utils/date';
+import { SoftCard } from '../../components/ui/Motion';
 import { colors, fonts, spacing, typography } from '../../theme';
 
 const GENDERS: { id: Gender; label: string }[] = [
@@ -71,12 +72,12 @@ export function AddBabyScreen() {
             <Chip key={g.id} label={g.label} selected={gender === g.id} onPress={() => setGender(g.id)} />
           ))}
         </View>
-        <View style={styles.tourCard}>
+        <SoftCard tone="accent" style={styles.tourCard}>
           <Text style={styles.tourTitle}>A quick tour awaits</Text>
           <Text style={styles.tourBody}>
             Capture memories, mark milestones, set gentle reminders, and invite family — all in one calm place.
           </Text>
-        </View>
+        </SoftCard>
         <Button title="Enter BabyBliss" onPress={finish} />
         <Button title="Back" variant="ghost" onPress={() => setStep(1)} />
       </View>
@@ -90,9 +91,6 @@ const styles = StyleSheet.create({
   label: { fontFamily: fonts.bodyMedium, fontSize: 13, color: colors.inkSoft },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   tourCard: {
-    backgroundColor: colors.accentMist,
-    borderRadius: 20,
-    padding: spacing.lg,
     gap: spacing.xs,
     marginVertical: spacing.sm,
   },

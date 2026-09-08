@@ -71,7 +71,7 @@ export function ShareMemoryScreen({ route, navigation }: Props) {
 
   return (
     <Screen title="Share memory" subtitle={memory.title}>
-      <SoftCard style={styles.card}>
+      <SoftCard tone="warm" style={styles.card}>
         <Text style={styles.label}>Permissions</Text>
         <View style={styles.row}>
           {(['view', 'comment', 'collaborate'] as SharePermission[]).map((p) => (

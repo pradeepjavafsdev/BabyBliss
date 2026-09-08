@@ -24,7 +24,7 @@ import { AnalyticsScreen } from '../screens/premium/AnalyticsScreen';
 import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { Screen } from '../components/ui/Screen';
 import { SoftCard } from '../components/ui/Motion';
-import { colors, fonts } from '../theme';
+import { clayShadowOut, colors, fonts, radii } from '../theme';
 import { AuthStackParamList, MainTabParamList, RootStackParamList } from './types';
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -148,10 +148,22 @@ export function RootNavigator() {
 const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: colors.surface,
-    borderTopColor: colors.line,
-    height: 64,
-    paddingBottom: 8,
-    paddingTop: 6,
+    borderTopWidth: 0,
+    height: 72,
+    paddingBottom: 10,
+    paddingTop: 10,
+    borderTopLeftRadius: radii.clay,
+    borderTopRightRadius: radii.clay,
+    position: 'absolute',
+    left: 8,
+    right: 8,
+    bottom: 6,
+    ...clayShadowOut,
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.22)',
+    borderBottomColor: 'rgba(150,110,90,0.28)',
   },
   tabLabel: {
     fontFamily: fonts.bodyMedium,

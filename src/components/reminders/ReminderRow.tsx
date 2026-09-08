@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, fonts, radii, spacing } from '../../theme';
+import { clayPressable, clayShadowOut, colors, fonts, radii, spacing } from '../../theme';
 import { Reminder } from '../../types';
 import { REMINDER_TYPE_LABELS } from '../../data/presets';
 import { formatMemoryDate } from '../../utils/date';
@@ -13,20 +13,16 @@ interface ReminderRowProps {
   onPress?: () => void;
 }
 
-const TYPE_ICON: Record<string, keyof typeof Ionicons.glyphMap> = {
-  vaccination: 'medkit-outline',
-  doctor: 'medical-outline',
-  feeding: 'nutrition-outline',
-  sleep: 'moon-outline',
-  medicine: 'flask-outline',
-  diaper: 'water-outline',
-  photo: 'camera-outline',
-  custom: 'notifications-outline',
-};
-
 export function ReminderRow({ reminder, onToggle, onSnooze, onPress }: ReminderRowProps) {
   return (
-    <Pressable onPress={onPress} style={[styles.row, reminder.completed && styles.done]}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.row,
+        reminder.completed && styles.done,
+        pressed && clayPressable,
+      ]}
+    >
       <Pressable onPress={onToggle} hitSlop={10} style={styles.check}>
         <Ionicons
           name={reminder.completed ? 'checkmark-circle' : 'ellipse-outline'}
@@ -43,7 +39,7 @@ export function ReminderRow({ reminder, onToggle, onSnooze, onPress }: ReminderR
       </View>
       {!reminder.completed && onSnooze ? (
         <Pressable onPress={onSnooze} style={styles.snooze}>
-          <Ionicons name="time-outline" size={18} color={colors.brand} />
+          <Ionicons name="time-outline" size={18} color={colors.brandDeep} />
         </Pressable>
       ) : null}
     </Pressable>
@@ -56,14 +52,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
     padding: spacing.md,
-    borderRadius: radii.md,
+    borderRadius: radii.clay,
     backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.line,
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.22)',
+    borderBottomColor: 'rgba(150,110,90,0.28)',
     marginBottom: spacing.sm,
+    ...clayShadowOut,
   },
   done: {
-    opacity: 0.55,
+    opacity: 0.6,
+    backgroundColor: colors.accentSoft,
   },
   check: {
     paddingRight: 2,
@@ -86,11 +87,17 @@ const styles = StyleSheet.create({
     color: colors.muted,
   },
   snooze: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.brandMist,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.brandSoft,
+    borderWidth: 2,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.22)',
+    borderBottomColor: 'rgba(150,110,90,0.28)',
     alignItems: 'center',
     justifyContent: 'center',
+    ...clayShadowOut,
   },
 });

@@ -8,8 +8,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { ReminderRow } from '../../components/reminders/ReminderRow';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Chip } from '../../components/ui/Chip';
+import { ClayAtmosphere } from '../../components/ui/ClaySurface';
 import { useApp } from '../../context/AppContext';
-import { colors, fonts, gradients, spacing } from '../../theme';
+import { clayPressable, clayShadowLift, colors, fonts, gradients, spacing } from '../../theme';
 import { RootStackParamList } from '../../navigation/types';
 
 export function RemindersScreen() {
@@ -30,13 +31,17 @@ export function RemindersScreen() {
   return (
     <View style={styles.root}>
       <LinearGradient colors={[...gradients.hero]} style={StyleSheet.absoluteFill} />
+      <ClayAtmosphere />
       <SafeAreaView style={styles.safe} edges={['top']}>
         <View style={styles.header}>
           <View>
             <Text style={styles.title}>Reminders</Text>
             <Text style={styles.sub}>Vaccines, visits, care rhythms</Text>
           </View>
-          <Pressable style={styles.addBtn} onPress={() => navigation.navigate('AddReminder')}>
+          <Pressable
+            style={({ pressed }) => [styles.addBtn, pressed && clayPressable]}
+            onPress={() => navigation.navigate('AddReminder')}
+          >
             <Ionicons name="add" size={24} color={colors.white} />
           </Pressable>
         </View>
@@ -87,12 +92,18 @@ const styles = StyleSheet.create({
   title: { fontFamily: fonts.display, fontSize: 28, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
   addBtn: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     backgroundColor: colors.brand,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.45)',
+    borderLeftColor: 'rgba(255,255,255,0.35)',
+    borderRightColor: 'rgba(140,60,50,0.35)',
+    borderBottomColor: 'rgba(120,50,45,0.45)',
+    ...clayShadowLift,
   },
   filters: {
     flexDirection: 'row',
@@ -100,5 +111,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
   },
-  list: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xxxl },
+  list: { paddingHorizontal: spacing.lg, paddingBottom: 110 },
 });
