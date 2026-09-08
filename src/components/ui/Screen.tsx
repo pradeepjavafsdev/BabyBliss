@@ -10,12 +10,16 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ClayAtmosphere } from './ClaySurface';
+import { BabyMascot } from '../mascots/BabyMascot';
+import { MascotIntent } from '../mascots/mascotAssets';
 import { colors, fonts, gradients, spacing, typography } from '../../theme';
 
 interface ScreenProps {
   children: React.ReactNode;
   title?: string;
   subtitle?: string;
+  /** Intent-matched clay baby mascot shown beside the page title. */
+  mascot?: MascotIntent;
   scroll?: boolean;
   rightAction?: React.ReactNode;
   style?: ViewStyle;
@@ -29,6 +33,7 @@ export function Screen({
   children,
   title,
   subtitle,
+  mascot,
   scroll = true,
   rightAction,
   style,
@@ -38,12 +43,13 @@ export function Screen({
   padded = true,
 }: ScreenProps) {
   const header =
-    title || rightAction ? (
+    title || rightAction || mascot ? (
       <View style={styles.header}>
         <View style={styles.headerText}>
           {title ? <Text style={styles.title}>{title}</Text> : null}
           {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         </View>
+        {mascot ? <BabyMascot intent={mascot} size="sm" style={styles.headerMascot} /> : null}
         {rightAction}
       </View>
     ) : null;
@@ -122,5 +128,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.muted,
     lineHeight: 20,
+  },
+  headerMascot: {
+    marginTop: -4,
   },
 });

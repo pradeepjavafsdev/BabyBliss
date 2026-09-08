@@ -7,7 +7,7 @@ import { Chip } from '../../components/ui/Chip';
 import { useApp } from '../../context/AppContext';
 import { Gender } from '../../types';
 import { createId } from '../../utils/date';
-import { SoftCard } from '../../components/ui/Motion';
+import { MascotHero } from '../../components/mascots/MascotHero';
 import { colors, fonts, spacing, typography } from '../../theme';
 
 const GENDERS: { id: Gender; label: string }[] = [
@@ -36,7 +36,7 @@ export function AddBabyScreen() {
 
   if (step === 0) {
     return (
-      <Screen title="Meet your little one" subtitle="We'll personalize age, milestones, and reminders.">
+      <Screen title="Meet your little one" subtitle="We'll personalize age, milestones, and reminders." mascot="onboarding">
         <View style={styles.block}>
           <Input label="Baby's name" value={name} onChangeText={setName} placeholder="Nova" autoFocus />
           <Button title="Continue" onPress={() => name.trim() && setStep(1)} disabled={!name.trim()} />
@@ -47,7 +47,7 @@ export function AddBabyScreen() {
 
   if (step === 1) {
     return (
-      <Screen title="Birth date" subtitle="Used for age calculation and milestone suggestions.">
+      <Screen title="Birth date" subtitle="Used for age calculation and milestone suggestions." mascot="onboarding">
         <View style={styles.block}>
           <Input
             label="Birth date (YYYY-MM-DD)"
@@ -64,7 +64,7 @@ export function AddBabyScreen() {
   }
 
   return (
-    <Screen title="Almost there" subtitle={`How should we refer to ${name || 'your baby'}?`}>
+    <Screen title="Almost there" subtitle={`How should we refer to ${name || 'your baby'}?`} mascot="onboarding">
       <View style={styles.block}>
         <Text style={styles.label}>Gender</Text>
         <View style={styles.chips}>
@@ -72,12 +72,12 @@ export function AddBabyScreen() {
             <Chip key={g.id} label={g.label} selected={gender === g.id} onPress={() => setGender(g.id)} />
           ))}
         </View>
-        <SoftCard tone="accent" style={styles.tourCard}>
+        <MascotHero intent="onboarding" tone="accent" size="lg" mascotSize="md" style={styles.tourCard}>
           <Text style={styles.tourTitle}>A quick tour awaits</Text>
           <Text style={styles.tourBody}>
             Capture memories, mark milestones, set gentle reminders, and invite family — all in one calm place.
           </Text>
-        </SoftCard>
+        </MascotHero>
         <Button title="Enter BabyBliss" onPress={finish} />
         <Button title="Back" variant="ghost" onPress={() => setStep(1)} />
       </View>

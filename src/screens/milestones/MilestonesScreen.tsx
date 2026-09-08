@@ -8,6 +8,7 @@ import { Chip } from '../../components/ui/Chip';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { ClayAtmosphere, ClaySurface } from '../../components/ui/ClaySurface';
+import { MascotHeader, MascotHero } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import { MilestoneCategory } from '../../types';
 import { babyAgeInMonths, formatShortDate } from '../../utils/date';
@@ -91,12 +92,12 @@ export function MilestonesScreen() {
       <ClayAtmosphere />
       <SafeAreaView style={styles.safe} edges={['top']}>
         <View style={styles.header}>
-          <View>
+          <MascotHeader intent="milestones" style={styles.headerMascot}>
             <Text style={styles.title}>Milestones</Text>
             <Text style={styles.sub}>
               {achievements.length} achieved · ~{ageMonths} months old
             </Text>
-          </View>
+          </MascotHeader>
           <Pressable
             style={({ pressed }) => [styles.addBtn, pressed && clayPressable]}
             onPress={() => setShowCustom((v) => !v)}
@@ -105,7 +106,7 @@ export function MilestonesScreen() {
           </Pressable>
         </View>
 
-        <ClaySurface tone="accent" size="lg" style={styles.calendar}>
+        <MascotHero intent="milestones" tone="accent" size="lg" style={styles.calendar} mascotSize="md">
           <Text style={styles.calTitle}>Milestone calendar</Text>
           <View style={styles.calRow}>
             {achievements.slice(0, 6).map((a) => {
@@ -122,7 +123,7 @@ export function MilestonesScreen() {
               <Text style={styles.calEmpty}>Achievements will bloom here.</Text>
             ) : null}
           </View>
-        </ClaySurface>
+        </MascotHero>
 
         {showCustom ? (
           <ClaySurface tone="warm" size="lg" style={styles.customBox}>
@@ -175,7 +176,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: spacing.sm,
   },
+  headerMascot: { flex: 1, marginBottom: 0 },
   title: { fontFamily: fonts.display, fontSize: 28, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
   addBtn: {
@@ -195,7 +198,6 @@ const styles = StyleSheet.create({
   calendar: {
     marginHorizontal: spacing.lg,
     marginTop: spacing.md,
-    gap: spacing.sm,
   },
   calTitle: { fontFamily: fonts.bodyBold, fontSize: 14, color: colors.accentDeep },
   calRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },

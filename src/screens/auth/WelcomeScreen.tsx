@@ -8,6 +8,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { FadeIn } from '../../components/ui/Motion';
 import { ClayAtmosphere, ClaySurface } from '../../components/ui/ClaySurface';
+import { BabyMascot } from '../../components/mascots/BabyMascot';
 import { useApp } from '../../context/AppContext';
 import { colors, fonts, gradients, spacing, typography } from '../../theme';
 import { AuthStackParamList } from '../../navigation/types';
@@ -33,6 +34,9 @@ export function WelcomeScreen({ navigation }: Props) {
         <ClayAtmosphere />
         <SafeAreaView style={styles.safe}>
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.form}>
+            <View style={styles.signInMascot}>
+              <BabyMascot intent="welcome" size="lg" />
+            </View>
             <ClaySurface tone="default" size="xl" style={styles.formCard}>
               <Text style={styles.brandSmall}>BabyBliss</Text>
               <Text style={styles.heading}>Welcome back</Text>
@@ -63,11 +67,16 @@ export function WelcomeScreen({ navigation }: Props) {
       <SafeAreaView style={styles.safe}>
         <View style={styles.hero}>
           <FadeIn>
+            <View style={styles.heroMascot}>
+              <BabyMascot intent="welcome" size="xl" />
+            </View>
+          </FadeIn>
+          <FadeIn delay={80}>
             <ClaySurface tone="warm" size="xl" style={styles.brandPill} contentStyle={styles.brandPillPad}>
               <Text style={styles.brand}>BabyBliss</Text>
             </ClaySurface>
           </FadeIn>
-          <FadeIn delay={120}>
+          <FadeIn delay={160}>
             <Text style={styles.tagline}>Blissful Memories,{'\n'}Forever Treasured</Text>
           </FadeIn>
           <FadeIn delay={240}>
@@ -94,10 +103,12 @@ export function WelcomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.canvas },
   safe: { flex: 1, paddingHorizontal: spacing.lg, justifyContent: 'space-between' },
-  hero: { flex: 1, justifyContent: 'center', gap: spacing.md, paddingTop: spacing.xxl },
-  brandPill: { alignSelf: 'flex-start' },
+  hero: { flex: 1, justifyContent: 'center', gap: spacing.md, paddingTop: spacing.lg },
+  heroMascot: { alignItems: 'center', marginBottom: spacing.sm },
+  signInMascot: { alignItems: 'center', marginBottom: spacing.md },
+  brandPill: { alignSelf: 'center' },
   brandPillPad: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm },
-  brand: { ...typography.brand, color: colors.brandDeep, fontSize: 36, lineHeight: 42 },
+  brand: { ...typography.brand, color: colors.brandDeep, fontSize: 36, lineHeight: 42, textAlign: 'center' },
   brandSmall: {
     fontFamily: fonts.displayBold,
     fontSize: 22,
@@ -109,11 +120,14 @@ const styles = StyleSheet.create({
     fontSize: 34,
     lineHeight: 40,
     color: colors.ink,
+    textAlign: 'center',
   },
   lead: {
     ...typography.body,
     maxWidth: 340,
     marginTop: spacing.sm,
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   actions: { gap: spacing.sm, paddingBottom: spacing.xl },
   form: { flex: 1, justifyContent: 'center' },

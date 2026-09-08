@@ -4,6 +4,7 @@ import { Screen } from '../../components/ui/Screen';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { SoftCard } from '../../components/ui/Motion';
+import { MascotHero } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import { sendEmailInvite, sendShareInviteSms } from '../../services/twilio';
 import { colors, fonts, spacing } from '../../theme';
@@ -39,7 +40,11 @@ export function FamilyScreen() {
   };
 
   return (
-    <Screen title="Family circle" subtitle="Control who can view and comment.">
+    <Screen title="Family circle" subtitle="Control who can view and comment." mascot="family">
+      <MascotHero intent="family" tone="brand" size="lg" mascotSize="md" style={{ marginBottom: spacing.lg }}>
+        <Text style={styles.name}>Invite your circle</Text>
+        <Text style={styles.meta}>Grandparents and relatives can follow along with care.</Text>
+      </MascotHero>
       <View style={styles.form}>
         <Input label="Name" value={name} onChangeText={setName} placeholder="Grandma Rose" />
         <Input label="Email or phone" value={contact} onChangeText={setContact} placeholder="rose@email.com" autoCapitalize="none" />

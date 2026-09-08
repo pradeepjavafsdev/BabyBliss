@@ -9,6 +9,7 @@ import { MemoryCard } from '../../components/memories/MemoryCard';
 import { Chip } from '../../components/ui/Chip';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { ClayAtmosphere } from '../../components/ui/ClaySurface';
+import { MascotHeader } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
 import { MemoryTag } from '../../types';
@@ -47,10 +48,10 @@ export function MemoriesScreen() {
       <ClayAtmosphere />
       <SafeAreaView style={styles.safe} edges={['top']}>
         <View style={styles.header}>
-          <View>
+          <MascotHeader intent="memories" style={styles.headerMascot}>
             <Text style={styles.title}>Memories</Text>
             <Text style={styles.sub}>{filtered.length} moments</Text>
-          </View>
+          </MascotHeader>
           <Pressable
             style={({ pressed }) => [styles.addBtn, pressed && clayPressable]}
             onPress={() => navigation.navigate('AddMemory')}
@@ -98,7 +99,7 @@ export function MemoriesScreen() {
             contentContainerStyle={styles.list}
             columnWrapperStyle={styles.galleryRow}
             ListEmptyComponent={
-              <EmptyState title="No memories yet" message="Capture a photo or note to begin the timeline." />
+              <EmptyState mascot="memories" title="No memories yet" message="Capture a photo or note to begin the timeline." />
             }
             renderItem={({ item }) => (
               <Pressable
@@ -121,7 +122,7 @@ export function MemoriesScreen() {
             contentContainerStyle={styles.list}
             ItemSeparatorComponent={() => <View style={{ height: spacing.sm }} />}
             ListEmptyComponent={
-              <EmptyState title="No memories yet" message="Capture a photo or note to begin the timeline." />
+              <EmptyState mascot="memories" title="No memories yet" message="Capture a photo or note to begin the timeline." />
             }
             renderItem={({ item }) => (
               <Pressable onPress={() => navigation.navigate('MemoryDetail', { id: item.id })}>
@@ -144,7 +145,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: spacing.sm,
   },
+  headerMascot: { flex: 1, marginBottom: 0 },
   title: { fontFamily: fonts.display, fontSize: 28, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
   addBtn: {

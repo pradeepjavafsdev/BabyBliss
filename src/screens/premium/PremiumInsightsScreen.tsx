@@ -6,6 +6,7 @@ import { Screen } from '../../components/ui/Screen';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { SoftCard, FadeIn } from '../../components/ui/Motion';
+import { MascotHero } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import {
   askParentingAssistant,
@@ -52,6 +53,7 @@ export function PremiumInsightsScreen() {
     <Screen
       title="AI insights"
       subtitle={user?.isPremium ? 'Premium unlocked' : 'Preview mode — upgrade for full assistant'}
+      mascot="premium"
     >
       {!user?.isPremium ? (
         <FadeIn>
@@ -67,12 +69,12 @@ export function PremiumInsightsScreen() {
 
       {insight ? (
         <FadeIn delay={80}>
-          <SoftCard tone="warm" style={styles.block}>
+          <MascotHero intent="premium" tone="warm" size="lg" mascotSize="md" style={styles.block}>
             <Text style={styles.label}>Daily thought · {insight.babyAgeLabel}</Text>
             <Text style={styles.reflection}>{insight.reflection}</Text>
             <Text style={styles.tip}>{insight.tip}</Text>
             <Text style={styles.dev}>{insight.developmentalNote}</Text>
-          </SoftCard>
+          </MascotHero>
         </FadeIn>
       ) : null}
 

@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { SoftCard } from '../../components/ui/Motion';
 import { Chip } from '../../components/ui/Chip';
+import { MascotHero } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import { PDF_TEMPLATES } from '../../data/presets';
 import { exportMemoryBookPdf, generateMemoryBookHtml, sharePdf } from '../../services/pdf';
@@ -44,7 +45,11 @@ export function ExportScreen() {
   };
 
   return (
-    <Screen title="Memory book" subtitle="Arrange moments into a print-ready keepsake.">
+    <Screen title="Memory book" subtitle="Arrange moments into a print-ready keepsake." mascot="export">
+      <MascotHero intent="export" tone="warm" size="lg" mascotSize="md" style={{ marginBottom: spacing.md }}>
+        <Text style={styles.templateName}>Your keepsake book</Text>
+        <Text style={styles.templateDesc}>Soft clay pages packed with first smiles and milestones.</Text>
+      </MascotHero>
       <Input
         label="Cover title"
         value={title}
