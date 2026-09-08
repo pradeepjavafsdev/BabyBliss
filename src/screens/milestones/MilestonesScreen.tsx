@@ -7,10 +7,11 @@ import { MilestoneRow } from '../../components/milestones/MilestoneRow';
 import { Chip } from '../../components/ui/Chip';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
+import { ClayAtmosphere, ClaySurface } from '../../components/ui/ClaySurface';
 import { useApp } from '../../context/AppContext';
 import { MilestoneCategory } from '../../types';
 import { babyAgeInMonths, formatShortDate } from '../../utils/date';
-import { colors, fonts, gradients, radii, spacing } from '../../theme';
+import { clayPressable, clayShadowLift, clayShadowOut, colors, fonts, gradients, radii, spacing } from '../../theme';
 
 const CATEGORIES: Array<MilestoneCategory | 'all' | 'achieved'> = [
   'all',
@@ -87,6 +88,7 @@ export function MilestonesScreen() {
   return (
     <View style={styles.root}>
       <LinearGradient colors={[...gradients.hero]} style={StyleSheet.absoluteFill} />
+      <ClayAtmosphere />
       <SafeAreaView style={styles.safe} edges={['top']}>
         <View style={styles.header}>
           <View>
@@ -95,12 +97,15 @@ export function MilestonesScreen() {
               {achievements.length} achieved · ~{ageMonths} months old
             </Text>
           </View>
-          <Pressable style={styles.addBtn} onPress={() => setShowCustom((v) => !v)}>
+          <Pressable
+            style={({ pressed }) => [styles.addBtn, pressed && clayPressable]}
+            onPress={() => setShowCustom((v) => !v)}
+          >
             <Ionicons name="add" size={24} color={colors.white} />
           </Pressable>
         </View>
 
-        <View style={styles.calendar}>
+        <ClaySurface tone="accent" size="lg" style={styles.calendar}>
           <Text style={styles.calTitle}>Milestone calendar</Text>
           <View style={styles.calRow}>
             {achievements.slice(0, 6).map((a) => {
@@ -117,14 +122,14 @@ export function MilestonesScreen() {
               <Text style={styles.calEmpty}>Achievements will bloom here.</Text>
             ) : null}
           </View>
-        </View>
+        </ClaySurface>
 
         {showCustom ? (
-          <View style={styles.customBox}>
+          <ClaySurface tone="warm" size="lg" style={styles.customBox}>
             <Input label="Custom milestone" value={customTitle} onChangeText={setCustomTitle} placeholder="First beach day" />
             <Input label="Description" value={customDesc} onChangeText={setCustomDesc} placeholder="Optional" />
             <Button title="Add milestone" onPress={saveCustom} />
-          </View>
+          </ClaySurface>
         ) : null}
 
         <FlatList
@@ -174,32 +179,41 @@ const styles = StyleSheet.create({
   title: { fontFamily: fonts.display, fontSize: 28, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
   addBtn: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     backgroundColor: colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.45)',
+    borderLeftColor: 'rgba(255,255,255,0.35)',
+    borderRightColor: 'rgba(40,90,80,0.35)',
+    borderBottomColor: 'rgba(30,70,60,0.45)',
+    ...clayShadowLift,
   },
   calendar: {
     marginHorizontal: spacing.lg,
     marginTop: spacing.md,
-    padding: spacing.md,
-    borderRadius: radii.lg,
-    backgroundColor: colors.accentMist,
     gap: spacing.sm,
   },
   calTitle: { fontFamily: fonts.bodyBold, fontSize: 14, color: colors.accentDeep },
   calRow: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs },
   calChip: {
     backgroundColor: colors.surface,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: radii.pill,
+    borderWidth: 2,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.2)',
+    borderBottomColor: 'rgba(150,110,90,0.25)',
+    ...clayShadowOut,
   },
   calChipText: { fontFamily: fonts.bodyMedium, fontSize: 12, color: colors.ink, maxWidth: 120 },
   calEmpty: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
   customBox: { marginHorizontal: spacing.lg, marginTop: spacing.md, gap: spacing.sm },
   filters: { paddingHorizontal: spacing.lg, gap: spacing.xs, paddingVertical: spacing.md },
-  list: { paddingHorizontal: spacing.md, paddingBottom: spacing.xxxl },
+  list: { paddingHorizontal: spacing.md, paddingBottom: 110 },
 });

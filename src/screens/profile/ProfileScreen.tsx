@@ -30,7 +30,7 @@ export function ProfileScreen() {
 
   return (
     <Screen title="Profile" subtitle="BabyBliss settings & baby details">
-      <SoftCard style={styles.card}>
+      <SoftCard tone="warm" style={styles.card}>
         <Text style={styles.brand}>BabyBliss</Text>
         <Text style={styles.tagline}>Blissful Memories, Forever Treasured</Text>
         <Text style={styles.meta}>{user.name} · {user.email}</Text>
@@ -40,7 +40,7 @@ export function ProfileScreen() {
         </Text>
       </SoftCard>
 
-      <SoftCard style={styles.card}>
+      <SoftCard tone="cool" style={styles.card}>
         <Text style={styles.label}>{baby.name}</Text>
         <Text style={styles.body}>
           Born {formatShortDate(baby.birthDate)} · {formatBabyAge(baby.birthDate)}

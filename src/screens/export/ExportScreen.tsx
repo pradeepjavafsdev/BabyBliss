@@ -59,8 +59,9 @@ export function ExportScreen() {
           return (
             <SoftCard
               key={t.id}
+              tone={template === t.id ? 'brand' : 'default'}
               onPress={() => !locked && setTemplate(t.id)}
-              style={[styles.template, template === t.id && styles.templateActive, locked && styles.locked]}
+              style={[styles.template, locked && styles.locked]}
             >
               <Text style={styles.templateName}>
                 {t.name}
@@ -95,7 +96,6 @@ const styles = StyleSheet.create({
   },
   templates: { gap: spacing.sm, marginBottom: spacing.lg },
   template: { gap: 4 },
-  templateActive: { borderColor: colors.brand, borderWidth: 1.5 },
   locked: { opacity: 0.5 },
   templateName: { fontFamily: fonts.bodyBold, fontSize: 16, color: colors.ink },
   templateDesc: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },

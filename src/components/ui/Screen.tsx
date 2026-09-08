@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ClayAtmosphere } from './ClaySurface';
 import { colors, fonts, gradients, spacing, typography } from '../../theme';
 
 interface ScreenProps {
@@ -57,6 +58,7 @@ export function Screen({
   return (
     <View style={[styles.root, style]}>
       <LinearGradient colors={[...gradients.hero]} style={StyleSheet.absoluteFill} />
+      <ClayAtmosphere />
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
         {scroll ? (
           <ScrollView
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
   },
   pad: {
     paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xxxl,
+    paddingBottom: 110,
   },
   scrollContent: {
     flexGrow: 1,

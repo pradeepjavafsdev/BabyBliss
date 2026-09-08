@@ -9,7 +9,7 @@ import { useApp } from '../../context/AppContext';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
 import { formatMemoryDate } from '../../utils/date';
 import { summarizeMemory } from '../../services/ai';
-import { colors, fonts, radii, spacing, typography } from '../../theme';
+import { clayShadowOut, colors, fonts, radii, spacing, typography } from '../../theme';
 import { RootStackParamList } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MemoryDetail'>;
@@ -57,8 +57,8 @@ export function MemoryDetailScreen({ route, navigation }: Props) {
       title={memory.title}
       subtitle={formatMemoryDate(memory.capturedAt)}
       rightAction={
-        <Pressable onPress={confirmDelete} hitSlop={12}>
-          <Ionicons name="trash-outline" size={22} color={colors.danger} />
+        <Pressable onPress={confirmDelete} hitSlop={12} style={styles.trashBtn}>
+          <Ionicons name="trash-outline" size={20} color={colors.danger} />
         </Pressable>
       }
     >
@@ -68,7 +68,9 @@ export function MemoryDetailScreen({ route, navigation }: Props) {
 
       {memory.location ? <Text style={styles.location}>{memory.location}</Text> : null}
 
-      <Text style={styles.note}>{memory.note || 'No notes yet.'}</Text>
+      <SoftCard tone="warm" style={styles.noteCard}>
+        <Text style={styles.note}>{memory.note || 'No notes yet.'}</Text>
+      </SoftCard>
 
       <View style={styles.tags}>
         {memory.tags.map((t) => (
@@ -79,7 +81,7 @@ export function MemoryDetailScreen({ route, navigation }: Props) {
       </View>
 
       {memory.aiSummary ? (
-        <SoftCard style={styles.aiBox}>
+        <SoftCard tone="cool" style={styles.aiBox}>
           <Text style={styles.aiLabel}>AI summary</Text>
           <Text style={styles.aiText}>{memory.aiSummary}</Text>
         </SoftCard>
@@ -104,29 +106,55 @@ export function MemoryDetailScreen({ route, navigation }: Props) {
 
 const styles = StyleSheet.create({
   missing: { ...typography.body, marginBottom: spacing.md },
+  trashBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.brandSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.22)',
+    borderBottomColor: 'rgba(150,110,90,0.28)',
+    ...clayShadowOut,
+  },
   media: {
     height: 220,
-    borderRadius: radii.xl,
+    borderRadius: radii.clayXl,
     backgroundColor: colors.brandSoft,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.lg,
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.22)',
+    borderBottomColor: 'rgba(150,110,90,0.28)',
+    ...clayShadowOut,
   },
   mediaLetter: { fontFamily: fonts.displayBold, fontSize: 72, color: colors.brandDeep },
   location: { fontFamily: fonts.bodyMedium, color: colors.accent, marginBottom: spacing.sm },
+  noteCard: { marginBottom: spacing.md },
   note: {
     fontFamily: fonts.handwritten,
     fontSize: 26,
     lineHeight: 32,
     color: colors.ink,
-    marginBottom: spacing.md,
   },
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginBottom: spacing.lg },
   tag: {
     backgroundColor: colors.accentSoft,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
     borderRadius: radii.pill,
+    borderWidth: 2,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.2)',
+    borderBottomColor: 'rgba(150,110,90,0.25)',
+    ...clayShadowOut,
   },
   tagText: { fontFamily: fonts.bodyMedium, fontSize: 12, color: colors.accentDeep },
   aiBox: { marginBottom: spacing.lg, gap: 6 },

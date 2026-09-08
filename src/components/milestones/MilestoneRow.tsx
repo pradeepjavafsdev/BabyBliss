@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { colors, fonts, radii, spacing } from '../../theme';
+import { clayPressable, clayShadowOut, colors, fonts, radii, spacing } from '../../theme';
 import { MilestoneDefinition } from '../../types';
 
 interface MilestoneRowProps {
@@ -22,7 +22,14 @@ const CATEGORY_COLOR: Record<string, string> = {
 export function MilestoneRow({ milestone, achieved, achievedAt, onPress }: MilestoneRowProps) {
   const color = CATEGORY_COLOR[milestone.category] ?? colors.brand;
   return (
-    <Pressable onPress={onPress} style={[styles.row, achieved && styles.achieved]}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.row,
+        achieved && styles.achieved,
+        pressed && clayPressable,
+      ]}
+    >
       <View style={[styles.dot, { backgroundColor: color }]}>
         <Ionicons
           name={achieved ? 'checkmark' : 'ellipse-outline'}
@@ -52,22 +59,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
     paddingVertical: spacing.md,
-    paddingHorizontal: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
+    paddingHorizontal: spacing.md,
+    marginBottom: spacing.sm,
+    borderRadius: radii.clay,
+    backgroundColor: colors.surface,
+    borderWidth: 2.5,
+    borderTopColor: 'rgba(255,255,255,0.95)',
+    borderLeftColor: 'rgba(255,255,255,0.9)',
+    borderRightColor: 'rgba(180,140,120,0.22)',
+    borderBottomColor: 'rgba(150,110,90,0.28)',
+    ...clayShadowOut,
   },
   achieved: {
-    backgroundColor: colors.accentMist,
-    borderRadius: radii.md,
-    borderBottomWidth: 0,
-    marginBottom: spacing.xs,
+    backgroundColor: colors.accentSoft,
   },
   dot: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2,
+    borderTopColor: 'rgba(255,255,255,0.45)',
+    borderLeftColor: 'rgba(255,255,255,0.35)',
+    borderRightColor: 'rgba(0,0,0,0.15)',
+    borderBottomColor: 'rgba(0,0,0,0.2)',
   },
   body: {
     flex: 1,

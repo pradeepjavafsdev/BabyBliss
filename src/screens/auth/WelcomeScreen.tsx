@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { FadeIn } from '../../components/ui/Motion';
+import { ClayAtmosphere, ClaySurface } from '../../components/ui/ClaySurface';
 import { useApp } from '../../context/AppContext';
 import { colors, fonts, gradients, spacing, typography } from '../../theme';
 import { AuthStackParamList } from '../../navigation/types';
@@ -29,22 +30,25 @@ export function WelcomeScreen({ navigation }: Props) {
     return (
       <View style={styles.root}>
         <LinearGradient colors={[...gradients.sunrise]} style={StyleSheet.absoluteFill} />
+        <ClayAtmosphere />
         <SafeAreaView style={styles.safe}>
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.form}>
-            <Text style={styles.brandSmall}>BabyBliss</Text>
-            <Text style={styles.heading}>Welcome back</Text>
-            <Text style={styles.sub}>Sign in to continue your baby's story.</Text>
-            <Input label="Name" value={name} onChangeText={setName} placeholder="Alex" autoCapitalize="words" />
-            <Input
-              label="Email"
-              value={email}
-              onChangeText={setEmail}
-              placeholder="you@email.com"
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-            <Button title="Continue" onPress={handleContinue} disabled={!email.trim()} />
-            <Button title="Back" variant="ghost" onPress={() => setMode('welcome')} />
+            <ClaySurface tone="default" size="xl" style={styles.formCard}>
+              <Text style={styles.brandSmall}>BabyBliss</Text>
+              <Text style={styles.heading}>Welcome back</Text>
+              <Text style={styles.sub}>Sign in to continue your baby's story.</Text>
+              <Input label="Name" value={name} onChangeText={setName} placeholder="Alex" autoCapitalize="words" />
+              <Input
+                label="Email"
+                value={email}
+                onChangeText={setEmail}
+                placeholder="you@email.com"
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+              <Button title="Continue" onPress={handleContinue} disabled={!email.trim()} />
+              <Button title="Back" variant="ghost" onPress={() => setMode('welcome')} />
+            </ClaySurface>
           </KeyboardAvoidingView>
         </SafeAreaView>
       </View>
@@ -55,10 +59,13 @@ export function WelcomeScreen({ navigation }: Props) {
     <View style={styles.root}>
       <StatusBar style="dark" />
       <LinearGradient colors={[...gradients.sunrise]} style={StyleSheet.absoluteFill} />
+      <ClayAtmosphere />
       <SafeAreaView style={styles.safe}>
         <View style={styles.hero}>
           <FadeIn>
-            <Text style={styles.brand}>BabyBliss</Text>
+            <ClaySurface tone="warm" size="xl" style={styles.brandPill} contentStyle={styles.brandPillPad}>
+              <Text style={styles.brand}>BabyBliss</Text>
+            </ClaySurface>
           </FadeIn>
           <FadeIn delay={120}>
             <Text style={styles.tagline}>Blissful Memories,{'\n'}Forever Treasured</Text>
@@ -88,7 +95,9 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.canvas },
   safe: { flex: 1, paddingHorizontal: spacing.lg, justifyContent: 'space-between' },
   hero: { flex: 1, justifyContent: 'center', gap: spacing.md, paddingTop: spacing.xxl },
-  brand: { ...typography.brand, color: colors.brandDeep },
+  brandPill: { alignSelf: 'flex-start' },
+  brandPillPad: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm },
+  brand: { ...typography.brand, color: colors.brandDeep, fontSize: 36, lineHeight: 42 },
   brandSmall: {
     fontFamily: fonts.displayBold,
     fontSize: 22,
@@ -107,7 +116,8 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   actions: { gap: spacing.sm, paddingBottom: spacing.xl },
-  form: { flex: 1, justifyContent: 'center', gap: spacing.md },
+  form: { flex: 1, justifyContent: 'center' },
+  formCard: { gap: spacing.md },
   heading: { ...typography.hero },
   sub: { ...typography.body, marginBottom: spacing.sm },
 });
