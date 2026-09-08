@@ -5,7 +5,7 @@ import { Screen } from '../../components/ui/Screen';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Chip } from '../../components/ui/Chip';
-import { SoftCard } from '../../components/ui/Motion';
+import { MascotHero } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import { sendEmailInvite, sendShareInviteSms } from '../../services/twilio';
 import { SharePermission } from '../../types';
@@ -27,7 +27,7 @@ export function ShareMemoryScreen({ route, navigation }: Props) {
 
   if (!memory || !baby) {
     return (
-      <Screen title="Share">
+      <Screen title="Share" mascot="share">
         <Text style={typography.body}>Memory not found.</Text>
       </Screen>
     );
@@ -70,8 +70,8 @@ export function ShareMemoryScreen({ route, navigation }: Props) {
   };
 
   return (
-    <Screen title="Share memory" subtitle={memory.title}>
-      <SoftCard tone="warm" style={styles.card}>
+    <Screen title="Share memory" subtitle={memory.title} mascot="share">
+      <MascotHero intent="share" tone="accent" size="lg" mascotSize="md" style={styles.card}>
         <Text style={styles.label}>Permissions</Text>
         <View style={styles.row}>
           {(['view', 'comment', 'collaborate'] as SharePermission[]).map((p) => (
@@ -82,7 +82,7 @@ export function ShareMemoryScreen({ route, navigation }: Props) {
           <Chip label="Private" selected={!isPublic} onPress={() => setIsPublic(false)} tone="neutral" />
           <Chip label="Public link" selected={isPublic} onPress={() => setIsPublic(true)} tone="accent" />
         </View>
-      </SoftCard>
+      </MascotHero>
 
       <View style={styles.block}>
         <Input

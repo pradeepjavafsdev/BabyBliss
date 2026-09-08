@@ -38,7 +38,7 @@ export function AddReminderScreen({ navigation }: Props) {
   };
 
   return (
-    <Screen title="New reminder" subtitle="One-time or repeating care cues.">
+    <Screen title="New reminder" subtitle="One-time or repeating care cues." mascot="reminders">
       <View style={styles.block}>
         <Input label="Title" value={title} onChangeText={setTitle} placeholder="Vaccination visit" />
         <Input label="Notes" value={notes} onChangeText={setNotes} placeholder="Optional details" />

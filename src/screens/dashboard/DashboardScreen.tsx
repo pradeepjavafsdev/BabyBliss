@@ -4,9 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Screen } from '../../components/ui/Screen';
-import { ClaySurface } from '../../components/ui/ClaySurface';
 import { FadeIn, SectionLabel, SoftCard } from '../../components/ui/Motion';
 import { MemoryCard } from '../../components/memories/MemoryCard';
+import { MascotHero } from '../../components/mascots/MascotHero';
+import { MascotBubble } from '../../components/mascots/BabyMascot';
 import { useApp } from '../../context/AppContext';
 import { buildDailyInsight } from '../../data/demo';
 import { babyAgeInDays, formatBabyAge, formatShortDate } from '../../utils/date';
@@ -45,16 +46,16 @@ export function DashboardScreen() {
             <Text style={styles.hello}>Hello, {user?.name?.split(' ')[0] ?? 'Parent'}</Text>
           </View>
           <Pressable
-            style={({ pressed }) => [styles.avatar, pressed && clayPressable]}
+            style={({ pressed }) => [pressed && clayPressable]}
             onPress={() => navigation.navigate('Profile')}
           >
-            <Text style={styles.avatarText}>{(user?.name ?? 'P').slice(0, 1)}</Text>
+            <MascotBubble intent="profile" size={52} />
           </Pressable>
         </View>
       </FadeIn>
 
       <FadeIn delay={80}>
-        <ClaySurface tone="warm" size="xl" style={styles.ageHero} lift>
+        <MascotHero intent="home" tone="warm" style={styles.ageHero} mascotSize="lg">
           <Text style={styles.babyName}>{baby.name}</Text>
           <Text style={styles.age}>{ageLabel}</Text>
           <Text style={styles.ageSub}>{days} days of wonder · Born {formatShortDate(baby.birthDate)}</Text>
@@ -63,7 +64,7 @@ export function DashboardScreen() {
             <Stat label="Milestones" value={String(achievements.length)} />
             <Stat label="Reminders" value={String(upcomingReminders.length)} />
           </View>
-        </ClaySurface>
+        </MascotHero>
       </FadeIn>
 
       <FadeIn delay={160}>
@@ -102,6 +103,8 @@ export function DashboardScreen() {
             <View style={styles.insightTop}>
               <Ionicons name="sparkles" size={18} color={colors.premium} />
               <Text style={styles.premiumBadge}>{user?.isPremium ? 'Premium' : 'Preview'}</Text>
+              <View style={{ flex: 1 }} />
+              <MascotBubble intent="premium" size={40} />
             </View>
             <Text style={styles.insightText}>{insight.reflection}</Text>
             <Text style={styles.insightTip}>{insight.tip}</Text>
@@ -204,25 +207,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.body,
     fontSize: 14,
     color: colors.muted,
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: colors.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2.5,
-    borderTopColor: 'rgba(255,255,255,0.25)',
-    borderLeftColor: 'rgba(255,255,255,0.18)',
-    borderRightColor: 'rgba(0,0,0,0.3)',
-    borderBottomColor: 'rgba(0,0,0,0.4)',
-    ...clayShadowOut,
-  },
-  avatarText: {
-    fontFamily: fonts.bodyBold,
-    color: colors.white,
-    fontSize: 16,
   },
   ageHero: {
     marginBottom: spacing.lg,

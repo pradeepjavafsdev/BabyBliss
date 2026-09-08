@@ -21,7 +21,7 @@ export function MemoryDetailScreen({ route, navigation }: Props) {
 
   if (!memory) {
     return (
-      <Screen title="Memory">
+      <Screen title="Memory" mascot="memories">
         <Text style={styles.missing}>This memory was removed.</Text>
         <Button title="Back" onPress={() => navigation.goBack()} />
       </Screen>
@@ -56,6 +56,7 @@ export function MemoryDetailScreen({ route, navigation }: Props) {
     <Screen
       title={memory.title}
       subtitle={formatMemoryDate(memory.capturedAt)}
+      mascot="memories"
       rightAction={
         <Pressable onPress={confirmDelete} hitSlop={12} style={styles.trashBtn}>
           <Ionicons name="trash-outline" size={20} color={colors.danger} />

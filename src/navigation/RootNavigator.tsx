@@ -55,7 +55,7 @@ function MoreScreen() {
     { title: 'Profile & settings', route: 'Profile' as const, icon: 'person-outline' as const },
   ];
   return (
-    <Screen title="More" subtitle="Sharing, keepsakes, and premium tools">
+    <Screen title="More" subtitle="Sharing, keepsakes, and premium tools" mascot="more">
       <View style={{ gap: 10 }}>
         {items.map((item) => (
           <SoftCard key={item.route} onPress={() => navigation.navigate(item.route)}>

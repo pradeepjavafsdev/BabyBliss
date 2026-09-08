@@ -81,7 +81,7 @@ export function AddMemoryScreen({ navigation }: Props) {
   };
 
   return (
-    <Screen title="New memory" subtitle="Capture a moment worth keeping.">
+    <Screen title="New memory" subtitle="Capture a moment worth keeping." mascot="memories">
       <View style={styles.block}>
         <View style={styles.row}>
           <Button title="Camera" variant="secondary" onPress={takePhoto} style={styles.half} />

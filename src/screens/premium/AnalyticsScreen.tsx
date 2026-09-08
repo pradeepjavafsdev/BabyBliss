@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Screen } from '../../components/ui/Screen';
 import { SoftCard } from '../../components/ui/Motion';
+import { MascotHero } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
 import { colors, fonts, radii, spacing } from '../../theme';
@@ -25,8 +26,8 @@ export function AnalyticsScreen() {
   }, [memories]);
 
   return (
-    <Screen title="Analytics" subtitle={baby ? `${baby.name}'s patterns` : 'Growth & memory insights'}>
-      <SoftCard style={styles.card}>
+    <Screen title="Analytics" subtitle={baby ? `${baby.name}'s patterns` : 'Growth & memory insights'} mascot="analytics">
+      <MascotHero intent="analytics" tone="cool" size="lg" mascotSize="md" style={styles.card}>
         <Text style={styles.label}>Memory density</Text>
         {density.map(([month, count]) => (
           <View key={month} style={styles.barRow}>
@@ -38,7 +39,7 @@ export function AnalyticsScreen() {
           </View>
         ))}
         {!density.length ? <Text style={styles.empty}>Capture memories to see trends.</Text> : null}
-      </SoftCard>
+      </MascotHero>
 
       <SoftCard style={styles.card}>
         <Text style={styles.label}>Most photographed themes</Text>

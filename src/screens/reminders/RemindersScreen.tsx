@@ -9,6 +9,7 @@ import { ReminderRow } from '../../components/reminders/ReminderRow';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Chip } from '../../components/ui/Chip';
 import { ClayAtmosphere } from '../../components/ui/ClaySurface';
+import { MascotHeader } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import { clayPressable, clayShadowLift, colors, fonts, gradients, spacing } from '../../theme';
 import { RootStackParamList } from '../../navigation/types';
@@ -34,10 +35,10 @@ export function RemindersScreen() {
       <ClayAtmosphere />
       <SafeAreaView style={styles.safe} edges={['top']}>
         <View style={styles.header}>
-          <View>
+          <MascotHeader intent="reminders" style={styles.headerMascot}>
             <Text style={styles.title}>Reminders</Text>
             <Text style={styles.sub}>Vaccines, visits, care rhythms</Text>
-          </View>
+          </MascotHeader>
           <Pressable
             style={({ pressed }) => [styles.addBtn, pressed && clayPressable]}
             onPress={() => navigation.navigate('AddReminder')}
@@ -58,6 +59,7 @@ export function RemindersScreen() {
           contentContainerStyle={styles.list}
           ListEmptyComponent={
             <EmptyState
+              mascot="reminders"
               icon="notifications-outline"
               title="No reminders"
               message="Add vaccinations, appointments, or photo nudges."
@@ -88,7 +90,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: spacing.sm,
   },
+  headerMascot: { flex: 1, marginBottom: 0 },
   title: { fontFamily: fonts.display, fontSize: 28, color: colors.ink },
   sub: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
   addBtn: {

@@ -6,6 +6,7 @@ import { Screen } from '../../components/ui/Screen';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
 import { SoftCard } from '../../components/ui/Motion';
+import { MascotHero } from '../../components/mascots/MascotHero';
 import { useApp } from '../../context/AppContext';
 import { formatBabyAge, formatShortDate } from '../../utils/date';
 import { isFirebaseConfigured } from '../../services/firebase';
@@ -29,8 +30,8 @@ export function ProfileScreen() {
   };
 
   return (
-    <Screen title="Profile" subtitle="BabyBliss settings & baby details">
-      <SoftCard tone="warm" style={styles.card}>
+    <Screen title="Profile" subtitle="BabyBliss settings & baby details" mascot="profile">
+      <MascotHero intent="profile" tone="warm" mascotSize="lg" style={styles.card}>
         <Text style={styles.brand}>BabyBliss</Text>
         <Text style={styles.tagline}>Blissful Memories, Forever Treasured</Text>
         <Text style={styles.meta}>{user.name} · {user.email}</Text>
@@ -38,7 +39,7 @@ export function ProfileScreen() {
         <Text style={styles.meta}>
           Firebase: {isFirebaseConfigured() ? 'Connected' : 'Demo mode (configure .env)'}
         </Text>
-      </SoftCard>
+      </MascotHero>
 
       <SoftCard tone="cool" style={styles.card}>
         <Text style={styles.label}>{baby.name}</Text>
