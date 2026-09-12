@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { clayPressable, clayShadowOut, colors, fonts, radii, spacing } from '../../theme';
+import { clayPressable, clayShadowChip, colors, fonts, radii, spacing } from '../../theme';
 
 interface ChipProps {
   label: string;
@@ -32,7 +32,7 @@ export function Chip({ label, selected, onPress, tone = 'brand' }: ChipProps) {
         pressed && clayPressable,
       ]}
     >
-      <Text style={[styles.text, { color: selected ? colors.white : palette.fg }]}>
+      <Text style={[styles.text, { color: selected ? colors.white : palette.fg }]} numberOfLines={1}>
         {label}
       </Text>
     </Pressable>
@@ -41,14 +41,21 @@ export function Chip({ label, selected, onPress, tone = 'brand' }: ChipProps) {
 
 const styles = StyleSheet.create({
   chip: {
-    paddingHorizontal: spacing.md + 2,
-    paddingVertical: spacing.xs + 4,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 34,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 0,
     borderRadius: radii.pill,
     borderWidth: 2,
-    ...clayShadowOut,
+    ...clayShadowChip,
   },
   text: {
     fontFamily: fonts.bodyMedium,
     fontSize: 13,
+    lineHeight: 16,
+    includeFontPadding: false,
   },
 });

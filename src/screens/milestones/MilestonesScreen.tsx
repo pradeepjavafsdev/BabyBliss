@@ -138,6 +138,7 @@ export function MilestonesScreen() {
           data={CATEGORIES}
           keyExtractor={(c) => c}
           showsHorizontalScrollIndicator={false}
+          style={styles.filtersList}
           contentContainerStyle={styles.filters}
           renderItem={({ item }) => (
             <Chip
@@ -216,6 +217,16 @@ const styles = StyleSheet.create({
   calChipText: { fontFamily: fonts.bodyMedium, fontSize: 12, color: colors.ink, maxWidth: 120 },
   calEmpty: { fontFamily: fonts.body, fontSize: 13, color: colors.muted },
   customBox: { marginHorizontal: spacing.lg, marginTop: spacing.md, gap: spacing.sm },
-  filters: { paddingHorizontal: spacing.lg, gap: spacing.xs, paddingVertical: spacing.md },
+  filtersList: {
+    flexGrow: 0,
+    flexShrink: 0,
+    height: 50,
+  },
+  filters: {
+    paddingHorizontal: spacing.lg,
+    gap: spacing.xs,
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
   list: { paddingHorizontal: spacing.md, paddingBottom: 110 },
 });

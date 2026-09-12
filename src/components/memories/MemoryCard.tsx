@@ -1,10 +1,10 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { clayShadowOut, colors, fonts, gradients, radii, spacing } from '../../theme';
+import { StyleSheet, Text, View } from 'react-native';
+import { clayShadowOut, colors, fonts, radii, spacing } from '../../theme';
 import { Memory } from '../../types';
 import { formatShortDate } from '../../utils/date';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
+import { MemoryPhoto } from './MemoryPhoto';
 
 interface MemoryCardProps {
   memory: Memory;
@@ -13,17 +13,10 @@ interface MemoryCardProps {
 }
 
 export function MemoryCard({ memory, compact }: MemoryCardProps) {
-  const initial = memory.title.slice(0, 1).toUpperCase();
   return (
     <View style={[styles.wrap, compact && styles.compact]}>
       <View style={styles.media}>
-        {memory.mediaUri ? (
-          <Image source={{ uri: memory.mediaUri }} style={styles.image} />
-        ) : (
-          <LinearGradient colors={[...gradients.memory]} style={styles.placeholder}>
-            <Text style={styles.initial}>{initial}</Text>
-          </LinearGradient>
-        )}
+        <MemoryPhoto uri={memory.mediaUri} title={memory.title} />
       </View>
       <View style={styles.body}>
         <Text style={styles.title} numberOfLines={1}>
@@ -70,20 +63,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: 'rgba(255,255,255,0.85)',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  placeholder: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  initial: {
-    fontFamily: fonts.displayBold,
-    fontSize: 32,
-    color: colors.white,
   },
   body: {
     flex: 1,

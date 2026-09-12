@@ -14,11 +14,11 @@ import { MASCOT_SOURCES, MascotIntent } from './mascotAssets';
 type MascotSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 const SIZE_MAP: Record<MascotSize, number> = {
-  xs: 44,
-  sm: 72,
-  md: 110,
-  lg: 150,
-  xl: 200,
+  xs: 40,
+  sm: 60,
+  md: 92,
+  lg: 124,
+  xl: 168,
 };
 
 interface BabyMascotProps {
@@ -53,7 +53,7 @@ export function BabyMascot({ intent, size = 'md', style, float = true }: BabyMas
     <Animated.View style={[styles.wrap, { width: dim, height: dim }, animStyle, style]} pointerEvents="none">
       <Image
         source={MASCOT_SOURCES[intent]}
-        style={{ width: dim, height: dim }}
+        style={{ width: dim, height: dim, backgroundColor: 'transparent' }}
         contentFit="contain"
         transition={200}
         accessibilityLabel={`${intent} baby mascot`}
@@ -76,7 +76,7 @@ export function MascotBubble({
     <View style={[styles.bubble, { width: size, height: size, borderRadius: size / 2 }, style]}>
       <Image
         source={MASCOT_SOURCES[intent]}
-        style={{ width: size * 0.92, height: size * 0.92 }}
+        style={{ width: size * 0.92, height: size * 0.92, backgroundColor: 'transparent' }}
         contentFit="contain"
       />
     </View>

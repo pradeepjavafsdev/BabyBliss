@@ -69,6 +69,26 @@ export const clayShadowLift: ViewStyle = Platform.select({
   },
 })!;
 
+/** Compact clay shadow for chips and tab items — does not inflate layout. */
+export const clayShadowChip: ViewStyle = Platform.select({
+  ios: {
+    shadowColor: '#B48C78',
+    shadowOffset: { width: 2, height: 3 },
+    shadowOpacity: 0.16,
+    shadowRadius: 5,
+  },
+  android: {
+    elevation: 3,
+    shadowColor: '#B48C78',
+  },
+  default: {
+    shadowColor: '#B48C78',
+    shadowOffset: { width: 2, height: 3 },
+    shadowOpacity: 0.14,
+    shadowRadius: 4,
+  },
+})!;
+
 /** Soft pressed / inset clay feel. */
 export const clayShadowInset: ViewStyle = Platform.select({
   ios: {

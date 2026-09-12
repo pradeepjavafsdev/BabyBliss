@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Screen } from '../../components/ui/Screen';
 import { Button } from '../../components/ui/Button';
 import { SoftCard } from '../../components/ui/Motion';
+import { MemoryPhoto } from '../../components/memories/MemoryPhoto';
 import { useApp } from '../../context/AppContext';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
 import { formatMemoryDate } from '../../utils/date';
@@ -64,7 +65,7 @@ export function MemoryDetailScreen({ route, navigation }: Props) {
       }
     >
       <View style={styles.media}>
-        <Text style={styles.mediaLetter}>{memory.title.slice(0, 1)}</Text>
+        <MemoryPhoto uri={memory.mediaUri} title={memory.title} letterSize={72} />
       </View>
 
       {memory.location ? <Text style={styles.location}>{memory.location}</Text> : null}
@@ -125,8 +126,6 @@ const styles = StyleSheet.create({
     height: 220,
     borderRadius: radii.clayXl,
     backgroundColor: colors.brandSoft,
-    alignItems: 'center',
-    justifyContent: 'center',
     marginBottom: spacing.lg,
     borderWidth: 2.5,
     borderTopColor: 'rgba(255,255,255,0.95)',
@@ -134,8 +133,8 @@ const styles = StyleSheet.create({
     borderRightColor: 'rgba(180,140,120,0.22)',
     borderBottomColor: 'rgba(150,110,90,0.28)',
     ...clayShadowOut,
+    overflow: 'hidden',
   },
-  mediaLetter: { fontFamily: fonts.displayBold, fontSize: 72, color: colors.brandDeep },
   location: { fontFamily: fonts.bodyMedium, color: colors.accent, marginBottom: spacing.sm },
   noteCard: { marginBottom: spacing.md },
   note: {

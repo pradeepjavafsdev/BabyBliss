@@ -26,6 +26,7 @@ import {
   PREDEFINED_MILESTONES,
 } from '../data/demo';
 import { clearPersistedState, loadPersistedState, persistState } from '../services/storage';
+import { deleteMemoryMedia } from '../services/media';
 import { createId } from '../utils/date';
 
 interface AppContextValue extends AppState {
@@ -34,7 +35,7 @@ interface AppContextValue extends AppState {
   completeOnboarding: (baby: Baby) => void;
   updateBaby: (patch: Partial<Baby>) => void;
   setPremium: (value: boolean) => void;
-  addMemory: (memory: Omit<Memory, 'id' | 'createdAt' | 'updatedAt' | 'babyId'>) => Memory;
+  addMemory: (memory: Omit<Memory, 'id' | 'createdAt' | 'updatedAt' | 'babyId'> & { id?: string }) => Memory;
   updateMemory: (id: string, patch: Partial<Memory>) => void;
   deleteMemory: (id: string) => void;
   addCustomMilestone: (milestone: Omit<MilestoneDefinition, 'id' | 'isCustom'>) => void;
@@ -124,11 +125,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addMemory = useCallback(
-    (memory: Omit<Memory, 'id' | 'createdAt' | 'updatedAt' | 'babyId'>) => {
+    (memory: Omit<Memory, 'id' | 'createdAt' | 'updatedAt' | 'babyId'> & { id?: string }) => {
       const now = new Date().toISOString();
       const created: Memory = {
         ...memory,
-        id: createId('mem'),
+        id: memory.id ?? createId('mem'),
         babyId: state.baby?.id ?? 'baby_unknown',
         createdAt: now,
         updatedAt: now,
@@ -149,7 +150,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const deleteMemory = useCallback((id: string) => {
-    setState((s) => ({ ...s, memories: s.memories.filter((m) => m.id !== id) }));
+    setState((s) => {
+      const doomed = s.memories.find((m) => m.id === id);
+      if (doomed?.mediaUri) void deleteMemoryMedia(doomed.mediaUri);
+      return { ...s, memories: s.memories.filter((m) => m.id !== id) };
+    });
   }, []);
 
   const addCustomMilestone = useCallback(

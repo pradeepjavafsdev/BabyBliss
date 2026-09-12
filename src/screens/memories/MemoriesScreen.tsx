@@ -10,6 +10,7 @@ import { Chip } from '../../components/ui/Chip';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { ClayAtmosphere } from '../../components/ui/ClaySurface';
 import { MascotHeader } from '../../components/mascots/MascotHero';
+import { MemoryPhoto } from '../../components/memories/MemoryPhoto';
 import { useApp } from '../../context/AppContext';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
 import { MemoryTag } from '../../types';
@@ -81,6 +82,7 @@ export function MemoriesScreen() {
           data={tags}
           keyExtractor={(t) => t}
           showsHorizontalScrollIndicator={false}
+          style={styles.tagsList}
           contentContainerStyle={styles.tags}
           renderItem={({ item }) => (
             <Chip
@@ -107,7 +109,7 @@ export function MemoriesScreen() {
                 onPress={() => navigation.navigate('MemoryDetail', { id: item.id })}
               >
                 <View style={styles.galleryThumb}>
-                  <Text style={styles.galleryLetter}>{item.title.slice(0, 1)}</Text>
+                  <MemoryPhoto uri={item.mediaUri} title={item.title} letterSize={36} />
                 </View>
                 <Text numberOfLines={1} style={styles.galleryTitle}>
                   {item.title}
@@ -184,11 +186,23 @@ const styles = StyleSheet.create({
   search: { flex: 1, fontFamily: fonts.body, fontSize: 15, color: colors.ink },
   modeRow: {
     flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
     gap: spacing.xs,
     paddingHorizontal: spacing.lg,
     marginTop: spacing.md,
   },
-  tags: { paddingHorizontal: spacing.lg, gap: spacing.xs, paddingVertical: spacing.md },
+  tagsList: {
+    flexGrow: 0,
+    flexShrink: 0,
+    height: 50,
+  },
+  tags: {
+    paddingHorizontal: spacing.lg,
+    gap: spacing.xs,
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
   list: { paddingHorizontal: spacing.lg, paddingBottom: 110 },
   galleryRow: { gap: spacing.sm },
   galleryItem: { flex: 1, marginBottom: spacing.sm },
@@ -196,6 +210,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: radii.clay,
     backgroundColor: colors.brandSoft,
+    overflow: 'hidden',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2.5,
@@ -205,6 +220,5 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(150,110,90,0.28)',
     ...clayShadowOut,
   },
-  galleryLetter: { fontFamily: fonts.displayBold, fontSize: 36, color: colors.brandDeep },
   galleryTitle: { fontFamily: fonts.bodyMedium, fontSize: 13, color: colors.ink, marginTop: 8, marginLeft: 4 },
 });

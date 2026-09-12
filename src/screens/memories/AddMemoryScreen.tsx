@@ -6,11 +6,14 @@ import { Screen } from '../../components/ui/Screen';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Chip } from '../../components/ui/Chip';
+import { MemoryPhoto } from '../../components/memories/MemoryPhoto';
 import { useApp } from '../../context/AppContext';
 import { MEMORY_TAG_LABELS } from '../../data/presets';
 import { suggestTagsFromImage, summarizeMemory } from '../../services/ai';
+import { uploadMemoryMedia } from '../../services/media';
 import { MemoryTag } from '../../types';
-import { colors, fonts, spacing } from '../../theme';
+import { createId } from '../../utils/date';
+import { colors, fonts, radii, spacing } from '../../theme';
 import { RootStackParamList } from '../../navigation/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'AddMemory'>;
@@ -22,10 +25,22 @@ export function AddMemoryScreen({ navigation }: Props) {
   const [location, setLocation] = useState('');
   const [tags, setTags] = useState<MemoryTag[]>(['everyday']);
   const [mediaUri, setMediaUri] = useState<string | undefined>();
+  const [mediaMime, setMediaMime] = useState<string | undefined>();
+  const [mediaType, setMediaType] = useState<'photo' | 'video'>('photo');
   const [saving, setSaving] = useState(false);
 
   const toggleTag = (tag: MemoryTag) => {
     setTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
+  };
+
+  const attachAsset = async (asset: ImagePicker.ImagePickerAsset) => {
+    setMediaUri(asset.uri);
+    setMediaMime(asset.mimeType);
+    setMediaType(asset.type === 'video' ? 'video' : 'photo');
+    if (asset.type !== 'video') {
+      const suggested = (await suggestTagsFromImage(asset.uri)) as MemoryTag[];
+      setTags((prev) => Array.from(new Set([...prev, ...suggested])));
+    }
   };
 
   const pickImage = async () => {
@@ -39,9 +54,7 @@ export function AddMemoryScreen({ navigation }: Props) {
       quality: 0.85,
     });
     if (!result.canceled && result.assets[0]) {
-      setMediaUri(result.assets[0].uri);
-      const suggested = (await suggestTagsFromImage(result.assets[0].uri)) as MemoryTag[];
-      setTags((prev) => Array.from(new Set([...prev, ...suggested])));
+      await attachAsset(result.assets[0]);
     }
   };
 
@@ -53,7 +66,7 @@ export function AddMemoryScreen({ navigation }: Props) {
     }
     const result = await ImagePicker.launchCameraAsync({ quality: 0.85 });
     if (!result.canceled && result.assets[0]) {
-      setMediaUri(result.assets[0].uri);
+      await attachAsset(result.assets[0]);
     }
   };
 
@@ -63,21 +76,42 @@ export function AddMemoryScreen({ navigation }: Props) {
       return;
     }
     setSaving(true);
-    const created = addMemory({
-      title: title.trim(),
-      note: note.trim(),
-      location: location.trim() || undefined,
-      tags: tags.length ? tags : ['everyday'],
-      mediaUri,
-      mediaType: 'photo',
-      capturedAt: new Date().toISOString(),
-    });
-    if (user?.isPremium && baby) {
-      const summary = await summarizeMemory(created, baby);
-      updateMemory(created.id, { aiSummary: summary });
+    try {
+      const memoryId = createId('mem');
+      const babyId = baby?.id ?? 'baby_unknown';
+      let storedUri = mediaUri;
+      if (mediaUri) {
+        try {
+          storedUri = await uploadMemoryMedia(mediaUri, babyId, memoryId, mediaMime);
+        } catch (error) {
+          console.warn('Memory photo upload failed', error);
+          Alert.alert(
+            'Photo not uploaded',
+            'Could not save the picture to Firebase Storage. The memory will still be saved without a cloud photo.'
+          );
+          storedUri = undefined;
+        }
+      }
+
+      const created = addMemory({
+        id: memoryId,
+        title: title.trim(),
+        note: note.trim(),
+        location: location.trim() || undefined,
+        tags: tags.length ? tags : ['everyday'],
+        mediaUri: storedUri,
+        mediaType,
+        capturedAt: new Date().toISOString(),
+      });
+
+      if (user?.isPremium && baby) {
+        const summary = await summarizeMemory(created, baby);
+        updateMemory(created.id, { aiSummary: summary });
+      }
+      navigation.replace('MemoryDetail', { id: created.id });
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
-    navigation.replace('MemoryDetail', { id: created.id });
   };
 
   return (
@@ -87,7 +121,12 @@ export function AddMemoryScreen({ navigation }: Props) {
           <Button title="Camera" variant="secondary" onPress={takePhoto} style={styles.half} />
           <Button title="Library" variant="ghost" onPress={pickImage} style={styles.half} />
         </View>
-        {mediaUri ? <Text style={styles.mediaOk}>Media attached ✓</Text> : null}
+        {mediaUri ? (
+          <View style={styles.preview}>
+            <MemoryPhoto uri={mediaUri} title={title || 'New memory'} letterSize={28} />
+          </View>
+        ) : null}
+        {mediaUri ? <Text style={styles.mediaOk}>Photo ready to save</Text> : null}
         <Input label="Title" value={title} onChangeText={setTitle} placeholder="First park day" />
         <Input
           label="Notes"
@@ -115,6 +154,11 @@ const styles = StyleSheet.create({
   block: { gap: spacing.md },
   row: { flexDirection: 'row', gap: spacing.sm },
   half: { flex: 1 },
+  preview: {
+    height: 180,
+    borderRadius: radii.clay,
+    overflow: 'hidden',
+  },
   mediaOk: { fontFamily: fonts.bodyMedium, color: colors.accent, fontSize: 13 },
   label: { fontFamily: fonts.bodyMedium, fontSize: 13, color: colors.inkSoft },
   tags: { gap: spacing.xs, paddingBottom: spacing.xs },

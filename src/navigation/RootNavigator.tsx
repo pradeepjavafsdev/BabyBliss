@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer, DarkTheme, Theme } from '@react-navigation/native';
@@ -24,7 +24,8 @@ import { AnalyticsScreen } from '../screens/premium/AnalyticsScreen';
 import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { Screen } from '../components/ui/Screen';
 import { SoftCard } from '../components/ui/Motion';
-import { clayShadowOut, colors, fonts, radii } from '../theme';
+import { ClayTabBar } from '../components/ui/ClayTabBar';
+import { colors, fonts } from '../theme';
 import { AuthStackParamList, MainTabParamList, RootStackParamList } from './types';
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -74,23 +75,11 @@ function MoreScreen() {
 function MainTabs() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      tabBar={(props) => <ClayTabBar {...props} />}
+      screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.brandDeep,
-        tabBarInactiveTintColor: colors.muted,
         tabBarStyle: styles.tabBar,
-        tabBarLabelStyle: styles.tabLabel,
-        tabBarIcon: ({ color, size }) => {
-          const map: Record<string, keyof typeof Ionicons.glyphMap> = {
-            Home: 'home',
-            Memories: 'images',
-            Milestones: 'flag',
-            Reminders: 'alarm',
-            More: 'grid',
-          };
-          return <Ionicons name={map[route.name]} size={size} color={color} />;
-        },
-      })}
+      }}
     >
       <Tab.Screen name="Home" component={DashboardScreen} />
       <Tab.Screen name="Memories" component={MemoriesScreen} />
@@ -147,27 +136,14 @@ export function RootNavigator() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: colors.surface,
+    backgroundColor: 'transparent',
     borderTopWidth: 0,
-    height: 72,
-    paddingBottom: 10,
-    paddingTop: 10,
-    borderTopLeftRadius: radii.clay,
-    borderTopRightRadius: radii.clay,
+    elevation: 0,
     position: 'absolute',
-    left: 8,
-    right: 8,
-    bottom: 6,
-    ...clayShadowOut,
-    borderWidth: 2.5,
-    borderTopColor: 'rgba(255,255,255,0.95)',
-    borderLeftColor: 'rgba(255,255,255,0.9)',
-    borderRightColor: 'rgba(180,140,120,0.22)',
-    borderBottomColor: 'rgba(150,110,90,0.28)',
-  },
-  tabLabel: {
-    fontFamily: fonts.bodyMedium,
-    fontSize: 11,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'visible',
   },
   moreRow: {
     flexDirection: 'row',

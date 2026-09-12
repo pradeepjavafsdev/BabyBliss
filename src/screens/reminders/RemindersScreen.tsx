@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
   },
   filters: {
     flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
     gap: spacing.xs,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,

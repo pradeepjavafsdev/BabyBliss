@@ -55,7 +55,7 @@ export function DashboardScreen() {
       </FadeIn>
 
       <FadeIn delay={80}>
-        <MascotHero intent="home" tone="warm" style={styles.ageHero} mascotSize="lg">
+        <MascotHero intent="home" tone="warm" style={styles.ageHero} mascotSize="md">
           <Text style={styles.babyName}>{baby.name}</Text>
           <Text style={styles.age}>{ageLabel}</Text>
           <Text style={styles.ageSub}>{days} days of wonder · Born {formatShortDate(baby.birthDate)}</Text>

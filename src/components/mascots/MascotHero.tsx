@@ -17,8 +17,8 @@ interface MascotHeroProps {
 }
 
 /**
- * Clay hero card with a cartoon baby sitting on / overlapping the surface —
- * matches the Dribbble clay kids-app layout where characters live on cards.
+ * Clay hero card with a cartoon baby on the top-right corner —
+ * content stays on the left / below so stats and copy are never covered.
  */
 export function MascotHero({
   intent,
@@ -28,11 +28,12 @@ export function MascotHero({
   lift = true,
   style,
   mascotAlign = 'right',
-  mascotSize = 'lg',
+  mascotSize = 'md',
 }: MascotHeroProps) {
-  const padRight = mascotAlign === 'right' ? 108 : undefined;
-  const padLeft = mascotAlign === 'left' ? 108 : undefined;
-  const padTop = mascotAlign === 'top' ? 96 : undefined;
+  const padBySize = { sm: 52, md: 76, lg: 100, xl: 120 }[mascotSize];
+  const padRight = mascotAlign === 'right' ? padBySize : undefined;
+  const padLeft = mascotAlign === 'left' ? padBySize : undefined;
+  const padTop = mascotAlign === 'top' ? padBySize : undefined;
 
   return (
     <View style={[styles.wrap, style]}>
@@ -50,6 +51,7 @@ export function MascotHero({
         {children}
       </ClaySurface>
       <View
+        pointerEvents="none"
         style={[
           styles.mascot,
           mascotAlign === 'right' && styles.mascotRight,
@@ -74,7 +76,7 @@ export function MascotHeader({ intent, children, style }: MascotHeaderProps) {
   return (
     <View style={[styles.headerRow, style]}>
       <View style={styles.headerText}>{children}</View>
-      <BabyMascot intent={intent} size="md" />
+      <BabyMascot intent={intent} size="sm" />
     </View>
   );
 }
@@ -83,6 +85,7 @@ const styles = StyleSheet.create({
   wrap: {
     position: 'relative',
     marginBottom: 8,
+    overflow: 'visible',
   },
   content: {
     minHeight: 120,
@@ -93,16 +96,16 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   mascotRight: {
-    right: -8,
-    bottom: -6,
+    top: -18,
+    right: -10,
   },
   mascotLeft: {
-    left: -8,
-    bottom: -6,
+    top: -18,
+    left: -10,
   },
   mascotTop: {
     alignSelf: 'center',
-    top: -28,
+    top: -36,
     left: 0,
     right: 0,
     alignItems: 'center',

@@ -31,13 +31,13 @@ export function ProfileScreen() {
 
   return (
     <Screen title="Profile" subtitle="BabyBliss settings & baby details" mascot="profile">
-      <MascotHero intent="profile" tone="warm" mascotSize="lg" style={styles.card}>
+      <MascotHero intent="profile" tone="warm" mascotSize="md" style={styles.card}>
         <Text style={styles.brand}>BabyBliss</Text>
         <Text style={styles.tagline}>Blissful Memories, Forever Treasured</Text>
         <Text style={styles.meta}>{user.name} · {user.email}</Text>
         <Text style={styles.meta}>Plan: {user.isPremium ? 'Premium' : 'Free'}</Text>
         <Text style={styles.meta}>
-          Firebase: {isFirebaseConfigured() ? 'Connected' : 'Demo mode (configure .env)'}
+          Firebase: {isFirebaseConfigured() ? 'Connected · babybliss-c1379' : 'Demo mode (configure .env)'}
         </Text>
       </MascotHero>
 
