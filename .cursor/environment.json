@@ -1,0 +1,14 @@
+{
+  "name": "BabyBliss",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "expo",
+      "command": "npx expo start --web --port 8081",
+      "description": "Expo dev server (Metro). Serves the web app at http://localhost:8081 and the native manifest/bundle for Expo Go on a physical iOS/Android device. Fast Refresh pushes edits to connected clients."
+    }
+  ],
+  "ports": [
+    { "name": "expo", "port": 8081 }
+  ]
+}
