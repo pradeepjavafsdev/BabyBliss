@@ -1,4 +1,5 @@
-import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
+import { EncodingType, readAsStringAsync } from 'expo-file-system/legacy';
 import { ensureFirebaseAuth, getFirebaseStorage, isFirebaseConfigured } from './firebase';
 
 function guessExtension(uri: string, mimeType?: string) {
@@ -20,12 +21,8 @@ function contentTypeFor(ext: string, mimeType?: string) {
   return 'image/jpeg';
 }
 
-async function uriToBytes(uri: string): Promise<Uint8Array> {
-  const response = await fetch(uri);
-  if (!response.ok) {
-    throw new Error('Could not read the selected photo.');
-  }
-  return new Uint8Array(await response.arrayBuffer());
+async function uriToBase64(uri: string): Promise<string> {
+  return readAsStringAsync(uri, { encoding: EncodingType.Base64 });
 }
 
 export async function uploadMemoryMedia(
@@ -44,8 +41,8 @@ export async function uploadMemoryMedia(
   const contentType = contentTypeFor(ext, mimeType);
   const path = `memories/${babyId}/${memoryId}.${ext}`;
   const fileRef = ref(storage, path);
-  const bytes = await uriToBytes(localUri);
-  await uploadBytes(fileRef, bytes, { contentType });
+  const base64 = await uriToBase64(localUri);
+  await uploadString(fileRef, base64, 'base64', { contentType });
   return getDownloadURL(fileRef);
 }
 

@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "babybliss-c1379"
-  }
+  },
+  "targets": {
+    "babybliss-c1379": {
+      "storage": {
+        "default": [
+          "babybliss-c1379"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

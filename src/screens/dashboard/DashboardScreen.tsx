@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,8 @@ import { MemoryCard } from '../../components/memories/MemoryCard';
 import { MascotHero } from '../../components/mascots/MascotHero';
 import { MascotBubble } from '../../components/mascots/BabyMascot';
 import { useApp } from '../../context/AppContext';
-import { buildDailyInsight } from '../../data/demo';
+import { generateDailyThought } from '../../services/ai';
+import { DailyInsight } from '../../types';
 import { babyAgeInDays, formatBabyAge, formatShortDate } from '../../utils/date';
 import { clayPressable, clayShadowOut, colors, fonts, radii, spacing, typography } from '../../theme';
 import { RootStackParamList } from '../../navigation/types';
@@ -33,7 +34,20 @@ export function DashboardScreen() {
       .slice(0, 3);
   }, [achievements, milestones, baby, days]);
 
-  const insight = baby ? buildDailyInsight(baby) : null;
+  const [insight, setInsight] = useState<DailyInsight | null>(null);
+
+  useEffect(() => {
+    if (!baby) return;
+    let cancelled = false;
+    void generateDailyThought(baby, memories).then((daily) => {
+      if (!cancelled) setInsight(daily);
+    });
+    return () => {
+      cancelled = true;
+    };
+    // Regenerate once per app load for this baby/memories snapshot — not on every keystroke elsewhere in the app.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [baby?.id]);
 
   if (!baby) return null;
 

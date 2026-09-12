@@ -16,6 +16,8 @@ import {
 import { getFirestore, Firestore } from 'firebase/firestore';
 import { getDatabase, Database, ref, get, set, remove } from 'firebase/database';
 import { getStorage, FirebaseStorage } from 'firebase/storage';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
+import { getAI, GoogleAIBackend, type AI } from 'firebase/ai';
 import type { Analytics } from 'firebase/analytics';
 import { AppState } from '../types';
 
@@ -30,6 +32,8 @@ const firebaseConfig = {
   measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID ?? '',
 };
 
+const RECAPTCHA_ENTERPRISE_SITE_KEY = process.env.EXPO_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY ?? '';
+
 const CLOUD_STATE_PATH = 'babybliss/app/state';
 
 let app: FirebaseApp | null = null;
@@ -38,6 +42,7 @@ let db: Firestore | null = null;
 let rtdb: Database | null = null;
 let storage: FirebaseStorage | null = null;
 let analytics: Analytics | null = null;
+let ai: AI | null = null;
 
 export const isFirebaseConfigured = () =>
   Boolean(firebaseConfig.apiKey) &&
@@ -72,6 +77,20 @@ export function getFirebaseApp(): FirebaseApp | null {
     storage = getStorage(app);
 
     if (Platform.OS === 'web') {
+      // App Check's reCAPTCHA provider needs a browser to render its challenge,
+      // so it only runs on web. Native builds would need @react-native-firebase/app-check
+      // (App Attest / Play Integrity) via a custom dev client instead of Expo Go.
+      if (RECAPTCHA_ENTERPRISE_SITE_KEY) {
+        try {
+          initializeAppCheck(app, {
+            provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_ENTERPRISE_SITE_KEY),
+            isTokenAutoRefreshEnabled: true,
+          });
+        } catch (error) {
+          console.warn('Firebase App Check init failed', error);
+        }
+      }
+
       void import('firebase/analytics')
         .then(async ({ getAnalytics, isSupported }) => {
           if (app && (await isSupported())) {
@@ -109,6 +128,15 @@ export function getFirebaseStorage() {
 export function getFirebaseAnalytics() {
   getFirebaseApp();
   return analytics;
+}
+
+export function getFirebaseAI(): AI | null {
+  const firebaseApp = getFirebaseApp();
+  if (!firebaseApp) return null;
+  if (!ai) {
+    ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
+  }
+  return ai;
 }
 
 /** Anonymous session so Storage rules that require auth can succeed. */
